@@ -37,6 +37,10 @@ public class Faculty {
         this.id = id;
     }
 
+    public Set<Student> getStudents() {
+        return students;
+    }
+
     public String getName() {
         return name;
     }
