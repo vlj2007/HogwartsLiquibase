@@ -1,5 +1,7 @@
 package ru.hogwarts.hogwartsliquibase.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.hogwartsliquibase.api.IStudent;
 import ru.hogwarts.hogwartsliquibase.model.Student;
@@ -13,6 +15,8 @@ import java.util.List;
 @Service
 public class StudentService implements IStudent {
 
+    Logger logger = LoggerFactory.getLogger(StudentService.class);
+
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
 
@@ -23,51 +27,63 @@ public class StudentService implements IStudent {
     }
 
     public Student createdStudent(Student student) {
+        logger.info("Was invoked method for create student");
         student.setId(null);
         return studentRepository.save(student);
     }
 
     public Student editStudent(Student student) {
+        logger.info("Was invoked method for edit student");
         return studentRepository.save(student);
     }
 
     public Student findStudent(Long id) {
+        logger.error("There is not student with id = " + id);
         return studentRepository.findById(id).orElseThrow(() -> new BadRequestException("Отсутствует id"));
     }
 
     public void deleteStudent(long id) {
+        logger.info("Was invoked method for delete student by id");
         studentRepository.deleteById(id);
     }
 
     public void deleteAllStudents(Student student) {
+        logger.info("Was invoked method for delete all student");
         studentRepository.deleteAll();
     }
 
     public void deleteAllStudents() {
+        logger.info("Was invoked method for delete all student");
         studentRepository.deleteAll();
     }
 
     public Collection<Student> getAllStudent() {
+        logger.info("Was invoked method for find all student");
         return studentRepository.findAll();
     }
 
     public List<Student> findStudentByAge(int age) {
+        logger.info("Was invoked method for find student by age");
         return studentRepository.findStudentByAge(age);
     }
 
     public Collection<Student> findByAgeBetween(int min, int max) {
+        logger.info("Was invoked method for find student by age between min and max");
         return studentRepository.findByAgeBetween(min, max);
     }
 
     public Collection<Student> findStudentByName(String name) {
+        logger.info("Was invoked method for find student by name");
         return studentRepository.findStudentByName(name);
     }
 
     public Collection<Student> findStudentByNameIgnoreCase(String name) {
+        logger.info("Was invoked method for find student by name ignore case");
         return studentRepository.findStudentByNameIgnoreCase(name);
     }
 
     public Collection<Student> findStudentByNameIgnoreCaseIsLike(String like) {
+        logger.info("Was invoked method for find student by name ignore case is like");
         return studentRepository.findStudentByNameIgnoreCaseIsLike(like);
     }
 }

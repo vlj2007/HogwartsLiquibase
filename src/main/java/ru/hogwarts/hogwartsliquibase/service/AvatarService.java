@@ -1,6 +1,8 @@
 package ru.hogwarts.hogwartsliquibase.service;
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,8 @@ import java.util.List;
 @Service
 @Transactional
 public class AvatarService implements IAvatar {
+
+    Logger logger = LoggerFactory.getLogger(AvatarService.class);
     private final AvatarRepository avatarRepository;
     private final StudentRepository studentRepository;
 
@@ -39,6 +43,7 @@ public class AvatarService implements IAvatar {
     }
 
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
+        logger.info("Was invoked method for upload Avatar");
         Student student = studentRepository.getById(studentId);
 
         Path filePath = Path.of(avatarsDir, student + "." + getExtensions(avatarFile.getOriginalFilename()));
@@ -70,14 +75,17 @@ public class AvatarService implements IAvatar {
     }
 
     public Avatar findAvatar(Long studentId) {
+        logger.info("Was invoked method for find Avatar");
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
     public void delete(Long id) {
+        logger.info("Was invoked method for delete Avatar");
         avatarRepository.deleteById(id);
     }
 
     private byte[] generateDataForDB(Path filePath) throws IOException {
+        logger.info("Was invoked method generate Data For DB Avatar");
         try (
                 InputStream is = Files.newInputStream(filePath);
                 BufferedInputStream bis = new BufferedInputStream(is, 1024);
@@ -98,6 +106,7 @@ public class AvatarService implements IAvatar {
     }
 
     public List<Avatar> getAll(Integer number, Integer size) {
+        logger.info("Was invoked method for get all Avatar");
         PageRequest pageRequest = PageRequest.of(number - 1, size);
         return avatarRepository.findAll(pageRequest).getContent();
     }
